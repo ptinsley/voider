@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <style>
+      body {
+        padding: 10px 24px;
+        margin: 0;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="row g-3" method="post">
+      <h4>Check Information</h4>
+      <div class="col-md-12">
+         <input type="text" class="form-control" id="bank_name" name="bank_name" placeholder="Bank Name" value="{{bank_name}}">
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control" id="aba_number" name="aba_number" placeholder="Routing Number" value="{{aba_number}}">
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control" id="account_number" name="account_number" placeholder="Account Number" value="{{account_number}}">
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control" id="check_number" name="check_number" placeholder="Check Number" value="{{check_number}}">
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control" id="date" name="date" placeholder="Date" value="{{date}}">
+      </div>
+
+      <hr/>
+
+      <h4>Personal Information</h4>
+      <div class="col-md-6">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{name}}">
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number" value="{{phone_number}}">
+      </div>
+      <div class="col-12">
+        <input type="text" class="form-control" id="address1" name="address1" placeholder="1234 Main St" placeholder="Address" value="{{address1}}">
+      </div>
+      <div class="col-12">
+        <input type="text" class="form-control" id="address2" name="address2" placeholder="Address 2" value="{{address2}}">
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control" id="city" name="city" placeholder="City" value="{{city}}">
+      </div>
+      <div class="col-md-4">
+        <input type="text" class="form-control" id="state" name="state" placeholder="State" value="{{state}}">
+      </div>
+      <div class="col-md-2">
+        <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Zipcode" value="{{zipcode}}">
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Generate Check</button>
+      </div>
+    </form>
+
+    <img src="{{image_data}}">
+  </body>
+</html>
