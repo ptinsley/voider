@@ -13,8 +13,8 @@ script_path = path.dirname(path.realpath(__file__))
 
 app = Flask(__name__)
 
-@app.route('/', methods=["GET", "POST"])
 
+@app.route('/', methods=["GET", "POST"])
 def root():
     name = ""
     address1 = ""
@@ -39,10 +39,11 @@ def root():
         account_number = request.form['account_number']
         aba_number = request.form['aba_number']
 
-    image_data = draw_check(name, address1, address2, city, state, zipcode, bank_name, check_number, account_number, aba_number)
+    image_data = draw_check(name, address1, address2, city, state,
+                            zipcode, bank_name, check_number, account_number, aba_number)
 
     return render_template(
-        "root.html", 
+        "root.html",
         name=name,
         address1=address1,
         address2=address2,
@@ -56,11 +57,12 @@ def root():
         image_data=image_data
     )
 
+
 def draw_check(name, address1, address2, city, state, zipcode, bank_name, check_number, account_number, aba_number):
-    # Open an image file
+    # Open blank check image
     image = Image.open(f"{script_path}/images/blankcheck.jpg")
 
-    # Open a font file
+    # Open fonts
     text_font = ImageFont.truetype(
         f"{script_path}/fonts/OpenSans-Regular.ttf", 14)
     void_font = ImageFont.truetype(
@@ -68,23 +70,29 @@ def draw_check(name, address1, address2, city, state, zipcode, bank_name, check_
     micr_font = ImageFont.truetype(
         f"{script_path}/fonts/micrenc.ttf", 24)
 
-    # Get a drawing context
     draw = ImageDraw.Draw(image)
 
+    left_x_margin = 30
+    right_x_margin = 840
+
     draw.text((680, 100), "DATE", font=text_font, fill="black")
-    draw.line((720, 115, 840, 115), fill="black")
+    draw.line((720, 115, right_x_margin, 115), fill="black")
 
     draw.text((780, 180), "DOLLARS", font=text_font, fill="black")
-    draw.line((30, 195, 770, 195), fill="black")
+    draw.line((left_x_margin, 195, 770, 195), fill="black")
 
-    draw.text((30, 130), "PAY TO THE\nORDER OF", font=text_font, fill="black")
+    draw.text((left_x_margin, 130), "PAY TO THE\nORDER OF",
+              font=text_font, fill="black")
     draw.line((110, 165, 650, 165), fill="black")
 
     draw.text((680, 150), "$", font=text_font, fill="black")
-    draw.line((695, 165, 840, 165), fill="black")
+    draw.line((695, 165, right_x_margin, 165), fill="black")
 
-    draw.text((30, 290), "MEMO", font=text_font, fill="black")
-    draw.line((80, 305,400,305), fill="black")
+    draw.text((left_x_margin, 290), "MEMO", font=text_font, fill="black")
+    draw.line((80, 305, 400, 305), fill="black")
+
+    # signature line
+    draw.line((450, 305, right_x_margin, 305), fill="black")
 
     account_owner = name
     if address1 != "":
@@ -95,11 +103,12 @@ def draw_check(name, address1, address2, city, state, zipcode, bank_name, check_
 
     if city != "" and state != "" and zipcode != "":
         account_owner = account_owner + f"\n{city}, {state} {zipcode}"
-    draw.text((30, 30), account_owner, font=text_font, fill="black")
+
+    draw.text((left_x_margin, 30), account_owner, font=text_font, fill="black")
 
     draw.text((350, 30), bank_name, font=text_font, fill="black")
 
-    draw.text((790,30), check_number, font=text_font, fill="black")
+    draw.text((790, 30), check_number, font=text_font, fill="black")
 
     draw.text((220, 110), "VOID", font=void_font, fill="black")
 
@@ -109,4 +118,6 @@ def draw_check(name, address1, address2, city, state, zipcode, bank_name, check_
     image_io = BytesIO()
     image.save(image_io, 'PNG')
 
+    # this won't be saved to disk, pass it back as base64 data to be injected as the
+    # src of an <img> tag
     return 'data:image/png;base64,' + b64encode(image_io.getvalue()).decode('ascii')
